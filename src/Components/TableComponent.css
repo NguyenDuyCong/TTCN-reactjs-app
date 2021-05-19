@@ -1,0 +1,23 @@
+table {
+    table-layout: fixed;
+}
+
+table, tr, td {
+    white-space: nowrap;
+    border-collapse: collapse;
+    border: 1px solid #000000;
+    padding: 0;
+}
+
+table tbody tr.row-selected {
+    background-color: #ece496;
+}
+
+table td.col-selected {
+    background-color: #ece496;
+}
+
+tr div.head {
+    min-width: 18px;
+    max-width: 18px;
+}
