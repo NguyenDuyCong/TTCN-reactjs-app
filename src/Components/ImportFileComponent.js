@@ -13,7 +13,7 @@ const ImportFileComponent = (props) => {
 
         var i;
         for (i = 2; i < content_copy.length; i += 2) {
-            if (content_copy === "") {
+            if (content_copy[i] === "" || content_copy[i+1] === "") {
                 continue;
             }
             data.push({
@@ -41,11 +41,10 @@ const ImportFileComponent = (props) => {
         <div className = 'upload-expense'>
             <input 
                 type="file"
-                multiple
                 id='file'
                 className='input-file'
-                // onChange={e => handleFileChosen(e.target.files[0])}
-                onChange={e => handleFile(e)}
+                onChange={e => handleFileChosen(e.target.files[0])}
+                // onChange={e => handleFile(e)}
             />
         </div>
     )

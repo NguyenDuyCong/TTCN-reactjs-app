@@ -2,10 +2,13 @@ import './App.css';
 import {useState} from 'react';
 import ImportFileComponent from './Components/ImportFileComponent';
 import TableComponent from './Components/TableComponent';
+import ReadPartitionFileComponent from './Components/ReadPartitionFileComponent';
+import TablePartitionComponent from './Components/TablePartitionComponent';
 
 function App() {
 
   const [data, setData] = useState([]);
+  const [parts, setParts] = useState([]);
 
   const showData = () => {
     if (data.length === 0) {
@@ -128,11 +131,23 @@ function App() {
 
   }
 
+  const showPartitionData = () => {
+    if (parts.length === 0) {
+      return (
+        <h1>ko co du lieu vao</h1>
+      )
+    } else {
+      return (
+        <TablePartitionComponent data={parts} />
+      )
+    }
+  }
   return (
     <div className="App">
       <ImportFileComponent getData={setData} />
       { showData() }
-      
+      <ReadPartitionFileComponent setParts={setParts} />
+      { showPartitionData() }
     </div>
   );
 }
