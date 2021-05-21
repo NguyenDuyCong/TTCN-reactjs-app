@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import "./TableComponent.css";
 
 const TableComponent = (props) => {
@@ -48,13 +48,13 @@ const TableComponent = (props) => {
             index ++;
         }
 
-        console.log("count column A: ", colA);
-        console.log("count column T: ", colT);
-        console.log("count column G: ", colG);
-        console.log("count column C: ", colC);
-        console.log("count column -: ", colGap);
-        console.log("count rows: ", rows);
-        console.log("count columns: ", columns);
+        // console.log("count column A: ", colA);
+        // console.log("count column T: ", colT);
+        // console.log("count column G: ", colG);
+        // console.log("count column C: ", colC);
+        // console.log("count column -: ", colGap);
+        // console.log("count rows: ", rows);
+        // console.log("count columns: ", columns);
     }
 
     const getMatrix = () => {
@@ -68,7 +68,7 @@ const TableComponent = (props) => {
 
     const showHeader = () => {
         return (
-            <tr>
+            <tr className="row">
                 <td></td>
                 <td></td>
                 {data[0]['value'].map((value, index) => {
@@ -122,6 +122,7 @@ const TableComponent = (props) => {
                 <div>Number of G columns: {colG}</div>
                 <div>Number of C columns: {colC}</div>
                 <div>Number of - columns: {colGap}</div>
+                <div>Number of partition: {props.parts.length}</div>
             </div>
         </div>
     )

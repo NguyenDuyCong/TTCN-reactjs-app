@@ -33,9 +33,9 @@ const ImportFileComponent = (props) => {
         fileReader.readAsText(file);
     }
 
-    const handleFile = (e) => {
-        console.log(e.target.files);
-    }
+    // const handleFile = (e) => {
+    //     console.log(e.target.files);
+    // }
 
     return (
         <div className = 'upload-expense'>

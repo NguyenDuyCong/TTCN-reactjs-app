@@ -23,7 +23,7 @@ function App() {
           <button onClick={handleDeleteRow}>Delete Row</button>
           <button onClick={handleInvertColumnSelection}>Invert Column Selection</button>
           <button onClick={handleDeleteColumn}>Delete Column</button>
-          <TableComponent data={data} handleSelectRow={e => handleSelectRow(e)}  handleSelectColumn={handleSelectColumn} />
+          <TableComponent data={data} parts={parts} handleSelectRow={e => handleSelectRow(e)}  handleSelectColumn={handleSelectColumn} />
         </div>
       )
     }
@@ -65,7 +65,7 @@ function App() {
   const handleSelectColumn = (e) => {
     // console.log(e.target.parentElement.cellIndex);
     const colIndex = e.target.parentElement.cellIndex;
-    var row = document.querySelectorAll("tr");
+    var row = document.querySelectorAll("tr.row");
     row.forEach((r) => {
       let columm = r.cells[colIndex];
       if (columm.classList.contains("col-selected")) {
@@ -134,11 +134,35 @@ function App() {
   const showPartitionData = () => {
     if (parts.length === 0) {
       return (
-        <h1>ko co du lieu vao</h1>
+        <h1>Them file partition</h1>
       )
     } else {
+      console.log(parts);
+      let part_list_element = [];
+      parts.forEach(e => {
+        let {name, begin, end} = e;
+        let temp_after = begin + 2 <= end ? begin + 2 : end;
+        let temp_before = end - 2 >= temp_after ? end - 2 : temp_after;
+        for (let i = begin; i <= temp_after; i++) {
+          part_list_element.push({
+            "name": name,
+            "column": i
+          })
+        }
+        part_list_element.push({
+          "name": name,
+          "column": "..."
+        })
+        for (let i = temp_before; i <= end; i++) {
+          part_list_element.push({
+            "name": name,
+            "column": i
+          })
+        }
+      })
+
       return (
-        <TablePartitionComponent data={parts} />
+        <TablePartitionComponent data={part_list_element} />
       )
     }
   }

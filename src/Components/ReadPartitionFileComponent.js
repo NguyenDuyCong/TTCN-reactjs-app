@@ -16,17 +16,17 @@ const ReadPartitionFileComponent = (props) => {
             let range_num = e.match(/[0-9]+-[0-9]+/g)[0];
             let [begin, end] = range_num.split("-");
             
-            for (let i = parseInt(begin); i <= parseInt(end); i++) {
-                data.push({
-                    "name": name,
-                    "column": i
-                })
-            }
-            // data.push({
-            //     "name": name,
-            //     "begin": parseInt(begin),
-            //     "end": parseInt(end)
-            // })
+            // for (let i = parseInt(begin); i <= parseInt(end); i++) {
+            //     data.push({
+            //         "name": name,
+            //         "column": i
+            //     })
+            // }
+            data.push({
+                "name": name,
+                "begin": parseInt(begin),
+                "end": parseInt(end)
+            })
         });
         // console.log(data);
         props.setParts(data);
@@ -39,9 +39,9 @@ const ReadPartitionFileComponent = (props) => {
         fileReader.readAsText(file);
     }
 
-    const handleFile = (e) => {
-        console.log(e.target.files);
-    }
+    // const handleFile = (e) => {
+    //     console.log(e.target.files);
+    // }
 
     return (
         <div className = 'upload-file-partition'>
