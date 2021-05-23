@@ -19,6 +19,8 @@ function App() {
       return (
         // <h1>Data is available</h1>
         <div>
+          <ReadPartitionFileComponent setParts={setParts} />
+          <button onClick={handleExportFile}>Export</button>
           <button onClick={handleInvertSelection}>Invert Row Selection</button>
           <button onClick={handleDeleteRow}>Delete Row</button>
           <button onClick={handleInvertColumnSelection}>Invert Column Selection</button>
@@ -29,9 +31,33 @@ function App() {
     }
   }
 
+  const addWhiteSpace = (key) => {
+    let listSpace = Array(12).fill("\xa0");
+    listSpace.splice(0, key.length);
+    return listSpace.join("");
+  }
+
+  const handleExportFile = () => {
+    console.log(data);
+    let content = "";
+    content += data.length + " " + data[0]['value'].length + "\n";
+    data.forEach(d => {
+      content += d["key"] + addWhiteSpace(d["key"]) + d['value'].join("") + "\n";
+    })
+    console.log(content);
+
+    // handle to download
+    var download = document.createElement('a');
+    var blob = new Blob([content], {type: "text/plain;charset=utf-8;"});
+    var url = URL.createObjectURL(blob);
+    download.href = url;
+    download.setAttribute('download', 'test.phy');
+    download.click();
+  }
+
   const handleSelectRow = (e) => {
-    console.log(e.target);
-    console.log("data", data);
+    // console.log(e.target);
+    // console.log("data", data);
     const row = e.target.parentElement.parentElement;
     if(row.classList.contains('row-selected')) {
       row.classList.remove('row-selected');
@@ -42,7 +68,7 @@ function App() {
 
   const handleDeleteRow = () => {
     let tempData = data.slice();
-    console.log("data", data);
+    // console.log("data", data);
     let row = document.querySelectorAll(".row-selected");
     if (row.length !== 0) {
       let indexNeedRemove = []
@@ -56,7 +82,7 @@ function App() {
 
       // console.log("temp", tempData);
       setData(tempData);
-      console.log("data", data);
+      // console.log("data", data);
     }
     
     // console.log(row);
@@ -80,7 +106,7 @@ function App() {
   const handleInvertColumnSelection = () => {
     let colSelected = document.querySelectorAll("td.cell.col-selected");
     let colUnSelected = document.querySelectorAll("td.cell:not(.col-selected)");
-    console.log(colSelected);
+    // console.log(colSelected);
     colSelected.forEach(col => {
       col.classList.remove('col-selected')
     })
@@ -98,7 +124,7 @@ function App() {
     col.forEach(c => {
       indexNeedRemove.push(c.cellIndex - 2)
     })
-    console.log(indexNeedRemove);
+    // console.log(indexNeedRemove);
     
     for (let i = indexNeedRemove.length - 1; i >= 0; i--) {
       tempData.forEach(v => {
@@ -137,40 +163,166 @@ function App() {
         <h1>Them file partition</h1>
       )
     } else {
-      console.log(parts);
+      // console.log(parts);
       let part_list_element = [];
       parts.forEach(e => {
         let {name, begin, end} = e;
-        let temp_after = begin + 2 <= end ? begin + 2 : end;
-        let temp_before = end - 2 >= temp_after ? end - 2 : temp_after;
-        for (let i = begin; i <= temp_after; i++) {
+        for (let i = begin; i <= end; i++) {
           part_list_element.push({
             "name": name,
             "column": i
           })
         }
-        part_list_element.push({
-          "name": name,
-          "column": "..."
-        })
-        for (let i = temp_before; i <= end; i++) {
-          part_list_element.push({
-            "name": name,
-            "column": i
-          })
-        }
+        // let temp_after = begin + 2 <= end ? begin + 2 : end;
+        // let temp_before = end - 2 >= temp_after ? end - 2 : temp_after;
+        // for (let i = begin; i <= temp_after; i++) {
+        //   part_list_element.push({
+        //     "name": name,
+        //     "column": i
+        //   })
+        // }
+        // part_list_element.push({
+        //   "name": name,
+        //   "column": "..."
+        // })
+        // for (let i = temp_before; i <= end; i++) {
+        //   part_list_element.push({
+        //     "name": name,
+        //     "column": i
+        //   })
+        // }
       })
 
       return (
-        <TablePartitionComponent data={part_list_element} />
+        <div>
+          <label htmlFor="part-name">
+            name partition: 
+            <input type="text" id="part-name" name="part-name" style={{width: 70}} />
+          </label>
+          <label htmlFor="start">
+            begin:
+            <input id="start" type="number" name="start" style={{width: 50}}/>
+          </label>
+          <label htmlFor="end">
+            end:
+            <input id="end" type="number" name="end" style={{width: 50}}/>
+          </label>
+          <button onClick={handleEditNamePart}>Edit partition</button>
+          <TablePartitionComponent data={part_list_element} handleEditNamePart={handleEditNamePart}/>
+        </div>
       )
     }
   }
+
+  const handleEditNamePart = (e) => {
+    let name = document.querySelector("input#part-name");
+    let start = document.querySelector("input#start");
+    let end = document.querySelector("input#end");
+    if (name.value === "" || start.value === "" || end.value === "") {
+      alert("Không được để trống phần nhập");
+    } else if (name.value.indexOf(" ") >= 0) {
+      alert("Tên không được có dấu cách");
+    } else if (parseInt(start.value) > parseInt(end.value)) {
+      alert("Vị trí bắt đầu phải nhỏ hơn vị trí kết thúc");
+    } else {
+      let partsData = parts.slice();
+      let newPartsData = [];
+      let isNextPart = false;
+      let isChanged = true;
+      // console.log(partsData);
+      for (let i = 0; i < partsData.length; i++) {
+        // console.log(newPartsData);
+        let p_name = partsData[i]['name'];
+        let p_begin = partsData[i]['begin'];
+        let p_end = partsData[i]['end'];
+        // console.log(partsData[i]);
+        // console.log(p_name, p_begin, p_end);
+        if (p_name === name.value) {
+          alert("Tên partition đã được dùng rồi");
+          isChanged = false;
+          break;
+        } else {
+          if (parseInt(start.value) > p_end || parseInt(end.value) < p_begin) {
+            // add part1
+            newPartsData.push({
+              "name": p_name,
+              "begin": p_begin,
+              "end": p_end
+            });
+            continue;
+          }
+          if (parseInt(start.value) === p_begin) {
+            if (parseInt(end.value) < p_end) {
+              // add new part
+              newPartsData.push({
+                "name": name.value,
+                "begin": p_begin,
+                "end": parseInt(end.value)
+              });
+              // add part 1
+              newPartsData.push({
+                "name": p_name,
+                "begin": parseInt(end.value) + 1,
+                "end": p_end
+              });
+            } else {
+              // add new part
+              newPartsData.push({
+                "name": name.value,
+                "begin": p_begin,
+                "end": parseInt(end.value)
+              });
+            }
+          } else if (parseInt(start.value) > p_begin) {
+            // add part1
+            newPartsData.push({
+              "name": p_name,
+              "begin": p_begin,
+              "end": parseInt(start.value) - 1
+            });
+            if (parseInt(end.value) > p_end) {
+              isNextPart = true;
+              // add new part
+              newPartsData.push({
+                "name": name.value,
+                "begin": parseInt(start.value),
+                "end": parseInt(end.value)
+              });
+            } else {
+              // add new part
+              newPartsData.push({
+                "name": name.value,
+                "begin": parseInt(start.value),
+                "end": p_end
+              });
+            }
+          } else if (isNextPart) {
+            if (parseInt(end.value) > end) {
+              isNextPart = true;
+              continue;
+            } else {
+              newPartsData.push({
+                "name": p_name,
+                "begin": parseInt(end.value) + 1,
+                "end": p_end
+              });
+              isNextPart = false;
+            }
+          }
+        }
+      }
+      if (isChanged) {
+        setParts(newPartsData);
+      }
+      // console.log(newPartsData);
+      // console.log([name.value, start.value, end.value]);
+    }
+  }
+
   return (
     <div className="App">
       <ImportFileComponent getData={setData} />
       { showData() }
-      <ReadPartitionFileComponent setParts={setParts} />
       { showPartitionData() }
     </div>
   );

@@ -39,12 +39,9 @@ const ReadPartitionFileComponent = (props) => {
         fileReader.readAsText(file);
     }
 
-    // const handleFile = (e) => {
-    //     console.log(e.target.files);
-    // }
-
     return (
         <div className = 'upload-file-partition'>
+            Read Partition file
             <input 
                 type="file"
                 id='file'

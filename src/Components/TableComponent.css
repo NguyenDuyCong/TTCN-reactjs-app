@@ -1,5 +1,6 @@
 table {
     table-layout: fixed;
+    text-align: center;
 }
 
 table, tr, td {

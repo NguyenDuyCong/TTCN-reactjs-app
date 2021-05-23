@@ -9,9 +9,9 @@ const TablePartitionComponent = (props) => {
             data.map((v, i) => {
                 let {name, column} = v;
                 return (
-                    <tr>
-                        <td>{column}</td>
-                        <td>{name}</td>
+                    <tr className="row-parts" key={i.toString()}>
+                        <td className="column-parts">{column}</td>
+                        <td className="name-parts">{name}</td>
                     </tr>
                 )
             })
@@ -19,9 +19,9 @@ const TablePartitionComponent = (props) => {
     }
 
     return (
-        <table>
+        <table className="table-partition">
             <thead>
-                <tr>
+                <tr className="row-parts">
                     <td>Column</td>
                     <td>Partition</td>
                 </tr>

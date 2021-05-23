@@ -62,18 +62,18 @@ const TableComponent = (props) => {
            return value['value'] 
         }))
 
-        console.log(matrix);
+        // console.log(matrix);
         countColValue(matrix);
     }
 
     const showHeader = () => {
         return (
-            <tr className="row">
+            <tr className="row" key="header-table">
                 <td></td>
                 <td></td>
                 {data[0]['value'].map((value, index) => {
                     return (
-                        <td className="cell"><div className="head" onClick={props.handleSelectColumn}>{index + 1}</div></td>
+                        <td className="cell" key={index.toString()}><div className="head" onClick={props.handleSelectColumn}>{index + 1}</div></td>
                     )
                 })}
             </tr>
@@ -91,7 +91,7 @@ const TableComponent = (props) => {
                         {
                             value.map((cellValue, cellIndex) => {
                                 return (
-                                    <td className="cell"><div>{cellValue}</div></td>
+                                    <td className="cell" key={cellIndex.toString()}><div>{cellValue}</div></td>
                                 )
                             })
                         }
@@ -123,6 +123,10 @@ const TableComponent = (props) => {
                 <div>Number of C columns: {colC}</div>
                 <div>Number of - columns: {colGap}</div>
                 <div>Number of partition: {props.parts.length}</div>
+                {props.parts.map((v, i) => {
+                    let {name, begin, end} = v;
+                    return <div key={i}>Partition {name} from {begin} to {end}</div>
+                })}
             </div>
         </div>
     )
