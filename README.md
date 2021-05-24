@@ -21,3 +21,6 @@ npm run electron:start
 npm run build
 npm run dist
 ```
+
+Bản unpacket trên windows: [here](https://drive.google.com/file/d/1Ag-vpT7zCksfONRfdwXoO40JmTq6p-M-/view?usp=sharing)
+
