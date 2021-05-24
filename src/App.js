@@ -20,7 +20,8 @@ function App() {
         // <h1>Data is available</h1>
         <div>
           <ReadPartitionFileComponent setParts={setParts} />
-          <button onClick={handleExportFile}>Export</button>
+          <button onClick={handleExportPhyFile}>Export .phy File</button>
+          <button onClick={handleExportNexFile}>Export .nex File</button>
           <button onClick={handleInvertSelection}>Invert Row Selection</button>
           <button onClick={handleDeleteRow}>Delete Row</button>
           <button onClick={handleInvertColumnSelection}>Invert Column Selection</button>
@@ -31,14 +32,39 @@ function App() {
     }
   }
 
+  const handleExportNexFile = () => {
+    // console.log(parts);
+    let content = "#nexus\n";
+    content += "begin sets;\n";
+    if (parts.length !== 0) {
+      parts.forEach(p => {
+        content += "\tcharset " + p["name"] + " = " + p["begin"].toString() + "-" + p["end"].toString() + ";\n";
+      })
+      content += "\tcharpartition mine =" + parts.map(v => " " + v["name"] + ":" + v["name"]) + ";\n";
+    } else {
+      content += "\tcharset part1 = 0-" + data[0]['value'].length.toString() + ";\n";
+      content += "\tcharpartition mine = part1:part1;\n";
+    }
+    content += "end;"
+    console.log(content);
+
+    // handle to download
+    var download = document.createElement('a');
+    var blob = new Blob([content], {type: "text/plain;charset=utf-8;"});
+    var url = URL.createObjectURL(blob);
+    download.href = url;
+    download.setAttribute('download', 'test.nex');
+    download.click();
+  }
+
   const addWhiteSpace = (key) => {
-    let listSpace = Array(12).fill("\xa0");
+    let listSpace = Array(12).fill(" ");
     listSpace.splice(0, key.length);
     return listSpace.join("");
   }
 
-  const handleExportFile = () => {
-    console.log(data);
+  const handleExportPhyFile = () => {
+    // console.log(data);
     let content = "";
     content += data.length + " " + data[0]['value'].length + "\n";
     data.forEach(d => {
@@ -132,6 +158,34 @@ function App() {
       })
     }
 
+    // edit parts if it is imported
+    let tempParts = parts.slice();
+    if(tempParts.length !== 0) {
+      let count = 0;
+      for (let i = 0; i < tempParts.length; i++) {
+        // eslint-disable-next-line
+        let {name, begin, end} = tempParts[i];
+        if (count > 0) {
+          tempParts[i]['begin'] = begin - count;
+          count = 0;
+        }
+        for (let k = 0; k <= indexNeedRemove.length; k++) {
+          if (indexNeedRemove[k] >= begin && indexNeedRemove[k] <= end) {
+            count ++;
+          } else {
+            continue;
+          }
+        }
+        if (count > 0) {
+          tempParts[i]["end"] = end - count;
+          indexNeedRemove.splice(0, count);
+        }
+      }
+    }
+    if (tempParts.length !== 0) {
+      setParts(tempParts);
+    }
+
     setData(tempData);
 
     let colSelected = document.querySelectorAll("td.col-selected");
@@ -160,7 +214,7 @@ function App() {
   const showPartitionData = () => {
     if (parts.length === 0) {
       return (
-        <h1>Them file partition</h1>
+        <h1>Partitions is not available</h1>
       )
     } else {
       // console.log(parts);
