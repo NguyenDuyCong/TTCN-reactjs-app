@@ -42,7 +42,7 @@ function App() {
       })
       content += "\tcharpartition mine =" + parts.map(v => " " + v["name"] + ":" + v["name"]) + ";\n";
     } else {
-      content += "\tcharset part1 = 0-" + data[0]['value'].length.toString() + ";\n";
+      content += "\tcharset part1 = 1-" + data[0]['value'].length.toString() + ";\n";
       content += "\tcharpartition mine = part1:part1;\n";
     }
     content += "end;"
