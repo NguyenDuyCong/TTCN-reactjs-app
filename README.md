@@ -16,6 +16,11 @@ npm run start
 npm run electron:start
 ```
 
+### Demo
+Video demo: [here](https://drive.google.com/file/d/1RbM2diQIxdpqeXvcbTWMzos0LwzrBBUC/view?usp=sharing)
+
+Link demo web: update...
+
 ### Build destribution
 ```
 npm run build
