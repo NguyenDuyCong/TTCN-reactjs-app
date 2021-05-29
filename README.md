@@ -19,7 +19,7 @@ npm run electron:start
 ### Demo
 Video demo: [here](https://drive.google.com/file/d/1RbM2diQIxdpqeXvcbTWMzos0LwzrBBUC/view?usp=sharing)
 
-Link demo web: update...
+Link demo web: [here](https://nguyenduycong.github.io/TTCN-reactjs-app/)
 
 ### Build destribution
 ```
