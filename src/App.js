@@ -227,24 +227,6 @@ function App() {
             "column": i
           })
         }
-        // let temp_after = begin + 2 <= end ? begin + 2 : end;
-        // let temp_before = end - 2 >= temp_after ? end - 2 : temp_after;
-        // for (let i = begin; i <= temp_after; i++) {
-        //   part_list_element.push({
-        //     "name": name,
-        //     "column": i
-        //   })
-        // }
-        // part_list_element.push({
-        //   "name": name,
-        //   "column": "..."
-        // })
-        // for (let i = temp_before; i <= end; i++) {
-        //   part_list_element.push({
-        //     "name": name,
-        //     "column": i
-        //   })
-        // }
       })
 
       return (

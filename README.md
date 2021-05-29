@@ -19,8 +19,11 @@ npm run electron:start
 ### Build destribution
 ```
 npm run build
-npm run dist
+npm run dist:win
+npm run dist:linux
+npm run dist:mac
 ```
 
-Bản unpacket trên windows: [here](https://drive.google.com/file/d/1Ag-vpT7zCksfONRfdwXoO40JmTq6p-M-/view?usp=sharing)
+Bản cài đặt trên windows: [here](https://drive.google.com/file/d/1gz8_ToThFXIJIDdedFfWzhVwH7wFKwMI/view?usp=sharing)
 
+Bản cài đặt linux: [here](https://drive.google.com/file/d/1FBSo4zgbQeAiooHGWWKRldnmE3hvKJlq/view?usp=sharing)
